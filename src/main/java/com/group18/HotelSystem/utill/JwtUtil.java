@@ -19,7 +19,7 @@ import static io.jsonwebtoken.Jwts.*;
 
 @Component
 public class JwtUtil {
-    private String generateToken(Map<String,Object> extraClaims , UserDetails details){
+    private static String generateToken(Map<String, Object> extraClaims, UserDetails details){
         return builder().setClaims(extraClaims).setSubject(details.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
@@ -35,7 +35,7 @@ public class JwtUtil {
 
     }
 
-    public String generateToken(UserDetails userDetails){
+    public static String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>() , userDetails);
     }
 
@@ -60,7 +60,7 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    private Key getSigningKey(){
+    private static Key getSigningKey(){
         byte[] keyBytes = Decoders.BASE64.decode("dXNlciBpcyB2YWxpZA==");
         return Keys.hmacShaKeyFor(keyBytes);
     }
